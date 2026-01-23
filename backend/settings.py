@@ -141,6 +141,11 @@ REST_FRAMEWORK = {
 raw_hosts = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1")
 ALLOWED_HOSTS = raw_hosts.split()
 
+# Superuser configuration
+SUPERUSER_USERNAME = os.getenv("SUPERUSER_USERNAME", "admin")
+SUPERUSER_EMAIL = os.getenv("SUPERUSER_EMAIL", "admin@example.com")
+SUPERUSER_PASSWORD = os.getenv("SUPERUSER_PASSWORD", "admin123")
+
 
 if not DEBUG:
     CORS_ALLOW_ALL_ORIGINS = False

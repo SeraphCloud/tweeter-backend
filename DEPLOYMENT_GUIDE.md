@@ -33,6 +33,11 @@ Set these environment variables in your Render dashboard under **Environment** �
 - `ALLOWED_HOSTS`: `tweeter-backend-tex8.onrender.com`
 - `DATABASE_URL`: `postgresql://victor:ADJeqONYwjJG2yCXStrw9a6uG3SoSCmf@dpg-d5peglvgi27c73fljpg0-a.virginia-postgres.render.com/tweeterdb_k7jw`
 
+### Superuser Variables (Novas)
+- `SUPERUSER_USERNAME`: `victor`
+- `SUPERUSER_EMAIL`: `victor@teste.com`
+- `SUPERUSER_PASSWORD`: `Vsi2025*`
+
 ### Optional Variables (if you have a frontend)
 - `CORS_ALLOWED_ORIGINS`: Your frontend domain(s) separated by spaces
 
@@ -59,25 +64,25 @@ Set these environment variables in your Render dashboard under **Environment** �
    - Trigger a new deployment in Render
    - Monitor the logs for any issues
 
-## Database Migration
+## Database Migration and Superuser Creation (Automático)
 
-After deployment, you'll need to run database migrations:
+**IMPORTANTE:** O script de inicialização agora executa automaticamente as migrações e cria o superusuário durante o deploy!
 
-1. In your Render dashboard, go to your service
-2. Click on **Shell** or **SSH** (depending on your plan)
-3. Run:
-   ```bash
-   python manage.py migrate
-   ```
+### Processo Automático:
+1. O Render executa automaticamente o script `init_app.py` antes de iniciar a aplicação
+2. Esse script executa as migrações do banco de dados
+3. Em seguida, cria o superusuário com as credenciais configuradas nas variáveis de ambiente
 
-## Creating a Superuser (Optional)
+### Credenciais do Superusuário:
+- **Username:** `victor`
+- **Email:** `victor@teste.com`
+- **Senha:** `Vsi2025*`
 
-If you need admin access:
-1. Use the Render shell/SSH
-2. Run:
-   ```bash
-   python manage.py createsuperuser
-   ```
+### Acesso ao Admin:
+Após o deploy, você poderá acessar o admin Django em:
+`https://tweeter-backend-tex8.onrender.com/admin/`
+
+Use as credenciais acima para fazer login.
 
 ## API Endpoints
 
