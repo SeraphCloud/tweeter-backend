@@ -6,7 +6,7 @@ description = ""
 authors = [
     {name = "Devv-ictor",email = "dev.victor.alexandre@gmail.com"}
 ]
-requires-python = ">=3.14,<3.15"
+requires-python = ">=3.10,<4.0"
 dependencies = [
     "djangorestframework-simplejwt (>=5.5.1,<6.0.0)",
     "django-cors-headers (>=4.9.0,<5.0.0)",
