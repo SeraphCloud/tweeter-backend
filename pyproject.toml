@@ -13,7 +13,8 @@ dependencies = [
     "pillow (>=12.1.0,<13.0.0)",
     "psycopg2-binary (>=2.9.11,<3.0.0)",
     "dj-database-url (>=3.1.0,<4.0.0)",
-    "djangorestframework (>=3.16.1,<4.0.0)"
+    "djangorestframework (>=3.16.1,<4.0.0)",
+    "gunicorn (>=24.0.0,<25.0.0)"
 ]
 
 
