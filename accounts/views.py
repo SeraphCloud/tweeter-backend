@@ -2,10 +2,15 @@ from rest_framework import viewsets, permissions
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import generics
 
 from .models import Profile, Follow
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer, RegisterSerializer
 from .permissions import IsOwnerOrReadOnly
+
+class RegisterView(generics.CreateAPIView):
+  serializer_class = RegisterSerializer
+  permission_classes = [permissions.AllowAny]
 
 class ProfileViewSet(viewsets.ModelViewSet):
   queryset = Profile.objects.select_related('user').all()
@@ -84,4 +89,3 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data, status=status.HTTP_200_OK)
-  
