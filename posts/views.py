@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -34,15 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
           follower=user
        ).values_list('following_id', flat=True)
 
-       queryset = (
-          Post.objects
-          .filter(author_id__in=following_ids)
-          .annotate(
-             likes_count=Count('likes', distinct=True),
-             comments_count=Count('comments', distinct=True)
-          )
-          .order_by('-created_at')
-       )
+       queryset = self.get_queryset().filter(Q(author_id__in=following_ids) | Q(author=user))
 
        serializer = self.get_serializer(queryset, many=True)
        return Response(serializer.data, status=status.HTTP_200_OK)
