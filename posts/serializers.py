@@ -10,7 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
     model = Post
     fields = ["id", "author", "content", "created_at", "likes_count", "comments_count"]
     read_only_fields = ["id", "author", "created_at", "likes_count", "comments_count"]
-    
+
   def get_is_liked(self, obj):
     user = self.context['request'].user
     if not user.is_authenticated:
