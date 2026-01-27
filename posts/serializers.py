@@ -8,14 +8,14 @@ class PostSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Post
-    fields = ["id", "author", "content", "created_at", "likes_count", "comments_count"]
-    read_only_fields = ["id", "author", "created_at", "likes_count", "comments_count"]
+    fields = ["id", "author", "content", "created_at", "likes_count", "comments_count", "is_liked"]
+    read_only_fields = ["id", "author", "created_at", "likes_count", "comments_count", "is_liked"]
 
   def get_is_liked(self, obj):
-    user = self.context['request'].user
-    if not user.is_authenticated:
+    request = self.context.get('request')
+    if not request or not request.user.is_authenticated:
       return False
-    return obj.likes.filter(user=user).exists()
+    return obj.likes.filter(user=request.user, post=obj).exists()
     
 
 class CommentSerializer(serializers.ModelSerializer):
