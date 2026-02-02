@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from .models import Post, Comment
-from accounts.models import Profile
 
 class PostSerializer(serializers.ModelSerializer):
   likes_count = serializers.IntegerField(read_only=True)
   is_liked = serializers.SerializerMethodField()
   comments_count = serializers.IntegerField(read_only=True)
 
-  author_username = serializers.CharField(source=Profile.user, read_only=True)
+  author_username = serializers.CharField(source="author.username", read_only=True)
   author_display_name = serializers.SerializerMethodField()
   author_avatar = serializers.SerializerMethodField()
 
