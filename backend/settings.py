@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
+import re
 import dj_database_url
 from pathlib import Path
 
@@ -151,3 +152,7 @@ if not DEBUG:
     CORS_ALLOW_ALL_ORIGINS = False
     raw_cors = os.getenv("CORS_ALLOWED_ORIGINS", "")
     CORS_ALLOWED_ORIGINS = [o for o in raw_cors.split() if o]
+
+    CORS_ALLOW_ALLOWED_ORIGINS_REGEXES = [
+        r"^https://.*\.vercel\.app$",
+    ]
