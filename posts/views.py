@@ -48,6 +48,16 @@ class PostViewSet(viewsets.ModelViewSet):
       queryset = self.get_queryset()
       serializer = self.get_serializer(queryset, many=True)
       return Response(serializer.data, status=status.HTTP_200_OK)
+  
+    @action(detail=True, methods=['get'], url_path='comments')
+    def comments(self, request, pk=None):
+      """
+      Retorna os comentários de um post específico.
+      """
+      post = self.get_object()
+      qs = self.get_queryset().filter(post=post)
+      serializer = CommentSerializer(qs, many=True)
+      return Response(serializer.data)
 
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def like(self, request, pk=None):
