@@ -8,9 +8,11 @@ https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
 """
 
 import os
-
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 
-application = get_wsgi_application()
+# Create application with media file serving
+from .media_handler import MediaServeWorker
+
+application = MediaServeWorker(get_wsgi_application())
