@@ -42,8 +42,30 @@ class PostSerializer(serializers.ModelSerializer):
   
 
 class CommentSerializer(serializers.ModelSerializer):
-  
+  user_username = serializers.CharField(source="user.username", read_only=True)
+  user_display_name = serializers.SerializerMethodField()
+  user_avatar = serializers.SerializerMethodField()
+
   class Meta:
     model = Comment
-    fields = ["id", "user", "post", "text", "created_at"]
-    read_only_fields = ["id", "user", "created_at"]
+    fields = ["id", "user", "user_username", "user_display_name", "user_avatar",
+              "post", "text", "created_at"]
+    read_only_fields = ["id", "user", "user_username", "user_display_name",
+                       "user_avatar", "created_at"]
+
+  def get_user_display_name(self, obj):
+    profile = getattr(obj.user, "profile", None)
+    if not profile:
+      return ""
+    return getattr(profile, "display_name", "") or ""
+
+  def get_user_avatar(self, obj):
+    profile = getattr(obj.user, "profile", None)
+    if not profile:
+      return None
+    avatar = getattr(profile, "avatar", None)
+    if not avatar:
+      return None
+    request = self.context.get("request")
+    url = avatar.url
+    return request.build_absolute_uri(url) if request else url

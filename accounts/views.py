@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import generics
+from django.db import models
 
 from .models import Profile, Follow
 from .serializers import ProfileSerializer, RegisterSerializer
@@ -89,3 +90,22 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data, status=status.HTTP_200_OK)
+  
+  @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+  def explore(self, request):
+    """
+    Lista todos os perfis para a página de Explore.
+    Exclui o próprio usuário da lista.
+    Suporta busca por username ou display_name.
+    """
+    qs = self.get_queryset().exclude(user=request.user)
+    
+    search = self.request.query_params.get('search')
+    if search:
+      qs = qs.filter(
+        models.Q(user__username__icontains=search) |
+        models.Q(display_name__icontains=search)
+      )
+    
+    serializer = self.get_serializer(qs, many=True)
+    return Response(serializer.data)

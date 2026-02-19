@@ -38,6 +38,16 @@ class PostViewSet(viewsets.ModelViewSet):
 
        serializer = self.get_serializer(queryset, many=True)
        return Response(serializer.data, status=status.HTTP_200_OK)
+  
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def all_posts(self, request):
+      """
+      Retorna todos os posts públicos para a página de Explore.
+      Inclui informação sobre se o usuário logado está seguindo o autor.
+      """
+      queryset = self.get_queryset()
+      serializer = self.get_serializer(queryset, many=True)
+      return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def like(self, request, pk=None):
