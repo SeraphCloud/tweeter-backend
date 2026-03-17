@@ -3,8 +3,9 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
-    fieldsets = list(UserAdmin.fieldsets) + [
+    fieldsets = (
+        *(UserAdmin.fieldsets or ()),
         ('Informações Adicionais', {'fields': ('foto_perfil',)}),
-    ]
+    )
 
 admin.site.register(CustomUser, CustomUserAdmin)
