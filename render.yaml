@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: tweeter-backend
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn tweeter_backend.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tweeter-db
+          property: connectionString
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
+databases:
+  - name: tweeter-db
+    plan: free
