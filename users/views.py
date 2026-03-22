@@ -59,3 +59,10 @@ class FollowingListView(generics.ListAPIView):
   def get_queryset(self):
     user = get_object_or_404(CustomUser, pk=self.kwargs['pk'])
     return user.following.all()
+
+class UserSearchView(generics.ListAPIView):
+  serializer_class = CustomUserSerializer
+
+  def get_queryset(self):
+    query = self.request.query_params.get('q','')
+    return CustomUser.objects.filter(username__icontains=query)
