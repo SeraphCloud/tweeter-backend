@@ -12,7 +12,7 @@ class PostViewSet(viewsets.ModelViewSet):
     following_ids = user.following.values_list('id', flat=True)
     return Post.objects.filter( # type: ignore
       author__in=list(following_ids) + [user.id]
-    ).order_by('-created_at')
+    ).select_related('author').order_by('-created_at')
 
   def perform_create(self, serializer):
     serializer.save(author=self.request.user)

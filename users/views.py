@@ -66,3 +66,13 @@ class UserSearchView(generics.ListAPIView):
   def get_queryset(self):
     query = self.request.query_params.get('q','')
     return CustomUser.objects.filter(username__icontains=query)
+
+class SuggesterUsersView(generics.ListAPIView):
+  serializer_class = CustomUserSerializer
+
+  def get_queryset(self): # type: ignore
+    user = self.request.user
+    already_following = user.following.values_list('id', flat=True) # type: ignore
+    return CustomUser.objects.exclude(
+      id__in=list(already_following)
+    ).exclude(id=user.id).order_by('?')[:5]
